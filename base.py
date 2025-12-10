@@ -7,10 +7,10 @@ from expyriment import design, control, stimuli
 
 ANGLES = [0, 60, 120, 180, 240, 300] # angles de rotation en degrés
 VERSIONS = ["normal", "mirror"] # lettre normale vs miroir
-REPETITIONS = 3 # nb de répétitions par condition
+REPETITIONS = 10 # nb de répétitions par condition
 FIXATION_DURATION = 500 # ms, durée de la croix de fixation
 MAX_RESPONSE_DELAY = 3000 # ms, temps max pour répondre
-stim = True ## indique si le stimulus est présenté
+stim_disp = False ## indique si le stimulus est présenté
 SOA = 400 # ms, stimulus présenté brièvement
 
 # Nombre total d'essais
@@ -33,15 +33,13 @@ fixation = stimuli.FixCross(size=(40, 40), colour=(255, 255, 255))
 blankscreen = stimuli.BlankScreen()
 
 # On prépare les images pour gagner du temps en présentation
-base_stimuli = {
-    "normal": stimuli.TextLine("R", text_size=80, text_colour=(255, 255, 255))
-}
+base_stimuli = [stimuli.TextLine(chr, text_size=80, text_colour=(255, 255, 255)) for chr in ['G', 'J', 'R', '2', '5', '7']]
 
 # Instructions
 instructions1 = stimuli.TextScreen(
     "Instructions",
     f"""
-Dans cette expérience, une lettre 'R' apparaîtra à l'écran,
+Dans cette expérience, une lettre apparaîtra à l'écran,
 plus ou moins inclinée.
 Votre tâche est de décider si la lettre est :
     F = version NORMALE
@@ -85,12 +83,13 @@ for i_trial, (angle, version) in enumerate(TRIALS, start=1):
     exp.clock.wait(FIXATION_DURATION)
 
     # On clone le stimulus de base (pour ne pas le modifier définitivement)
-    stim = base_stimuli['normal'].copy()
+    stim = base_stimuli[random.randint(0, len(base_stimuli) - 1)].copy()
+
     if version == "mirror":
         stim.flip([True, False])  # inversion miroir
     stim.rotate(angle)  # rotation mentale à simuler par le sujet
 
-    if stim:
+    if stim_disp:
         cue = stimuli.TextLine(f"R {angle} degrés", text_size=80, text_colour=(255, 255, 255))
         cue.present()
         exp.clock.wait(SOA)
