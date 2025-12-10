@@ -5,7 +5,7 @@ This project implements a modern replication of the classic mental rotation expe
 
 > Goal: reproduce the characteristic increase in reaction time with angular deviation from upright, and explore how closely we can match the original mental rotation patterns with a simple lab-style experiment.
 
-![Example setup / mental rotation illustration](docs/hero_mental_rotation.png)
+![Example setup / mental rotation illustration](introill.png)
 
 ---
 
